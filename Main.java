@@ -1,52 +1,33 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
+    private static int i = 1;
     public static void main(String[] args) {
-        System.out.print("Enter a string : ");
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the input String : ");
         String lol = scanner.nextLine();
-        ArrayList<String> input = new ArrayList<>();
-        for(int i=0;i<lol.length();i++){
-            input.add(lol.substring(i,i+1));
+        List<String> c = new ArrayList<>();
+        for(int m=0;m<lol.length();m++){
+            c.add(String.valueOf(lol.charAt(m)));
         }
-        process(lol,input);
-        for(String a : input){
-            System.out.println(a);
-        }
-        System.out.println(input.size());
+        String finalString = "";
+        process(c, finalString);
     }
 
-    private static void process(String lol, ArrayList<String> input) {
-        for(int i=0;i<lol.length()-1;i++) {
-            int temp = input.size();
-            generateTwoAtATime(temp,input,lol.length(),lol);
-            if (temp > 0) {
-                input.subList(0, temp).clear();
-            }
+    private static void process(List<String> c, String finalString) {
+        if (c.size() == 1) {
+            System.out.println(i++ + finalString.concat(c.get(0)));
+            return; // just moves back to the previous function recursive call
         }
-    }
-
-    private static void generateTwoAtATime(int end, ArrayList<String> input, int initial, String lol) {
-        for(int i = 0; i<end; i++){
-            for(int j=0;j<initial;j++){
-                if(!contains(input.get(i),lol.charAt(j))) {
-                    input.add(input.get(i) + lol.charAt(j));
-                }
-            }
+        for (int i = 0; i < c.size(); i++) {
+            String remove = c.remove(i);
+            process(new ArrayList<>(c), finalString.concat(remove));
+            c.add(i, remove);
         }
-    }
-
-    private static boolean contains(String a, char b){
-        int count = 0;
-        for(int i=0;i<a.length();i++){
-            if(a.charAt(i) == b){
-                count++;
-            }
-        }
-        return count > 0;
     }
 }
